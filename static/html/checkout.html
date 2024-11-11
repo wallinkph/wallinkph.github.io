@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="../css/checkout.css">
+    <link rel="stylesheet" href="../css/BASE.css">
+    <link rel="stylesheet" href="../css/CHECKOUTGRID.css">
+</head>
+<body>
+    <header>
+        <img src="../../media/wallinkRound.png" alt="Wallink logo" id="logo">
+        <h2><a href="store.html" style="text-decoration: none; color: black;">WALLINK</a></h2>
+    </header>
+    <div class="container">
+        <div class="content">
+            <form method="POST" id="checkoutForm">
+                <div class="header-wrapper">
+                    <h2>WALLINK</h2>
+                    <h1>Shipping Information</h1>
+                </div>
+
+                <!-- name -->
+                <div class="name-box">
+                    <label for="name">Full Name (Required)</label><br>
+                    <input type="text" name="name" placeholder="Name" id="nameInput" required>
+                </div>
+
+                <!-- contact number TEMP -->
+                <div class="contact-box">
+                    <label for="contact">Contact Number (Required)</label><br>
+                    <input type="text" name="contact" placeholder="Contact Number" id="contactInput" required>
+                </div>
+                
+
+                <!-- email (optional) -->
+                <div class="email-box">
+                    <label for="email">Email (Optional)</label><br>
+                    <input type="email" name="email" placeholder="Email" id="emailInput">
+                </div>
+                
+                <!-- location -->
+                <div class="cascading-location-dropdown">
+                    <label for="countryDropdown">Country (Required)</label><br>
+                    <select id="countryDropdown" onchange="updateProvinces()" required>
+                      <option value="">Select Country</option>
+                      <option value="Philippines">Philippines</option>
+                    </select>
+                  
+                    <label for="provinceDropdown">Province (Required)</label><br>
+                    <select id="provinceDropdown" onchange="updateCities()" required>
+                      <option value="">Select Province</option>
+                    </select>
+                  
+                    <label for="cityDropdown">City (Required)</label><br>
+                    <select id="cityDropdown" required>
+                      <option value="">Select City</option>
+                    </select>
+                </div>
+
+                <!-- address -->
+                <div class="address-box">
+                    <label for="address">Address (Required)</label><br>
+                    <input type="text" name="address" placeholder="Address" id="addressInput" required>
+                </div>
+
+                <!-- delivery note -->
+                <div class="delivery-note-box">
+                    <label for="deliveryNote">Delivery Note</label><br>
+                    <textarea name="deliveryNote" id="deliveryNoteInput" cols="" rows="10" placeholder="Delivery Note"></textarea>
+                </div>
+
+                <!-- payment method -->
+                <div class="payment-dropdown">
+                    <label for="paymentMethod">Payment Method (Required)</label><br>
+                    <select name="paymentMethod" id="paymentMethodDropdown" required>
+                        <option value="cod">Cash on Delivery</option>
+                        <option value="gcash">GCash</option>
+                    </select>
+                </div>
+
+                
+                <!-- pickup / deliver -->
+                <div class="delivery-option-dropdown">
+                    <label for="deliveryOption">Pickup or Deliver (Required)</label><br>
+                    <select name="deliveryOption" id="deliveryOptionDropdown" required>
+                        <option value="pickup">Pickup</option>
+                        <option value="deliver">Deliver</option>
+                    </select>
+                </div>
+
+
+                <!-- pickup / deliver DATE AND TIME -->
+                <div class="dateTime">
+                    <div class="date-box">
+                        <label for="date">Date (Required)</label><br>
+                        <input type="date" name="date" id="dateInput" required>
+                        <p id="dateErrorText"></p>
+                    </div>
+                    <div class="time-box">
+                        <label for="time">Time (Required)</label><br>
+                        <input type="time" name="time" id="timeInput" required>
+                        <p id="timeErrorText"></p>
+                    </div>
+                </div>
+
+                <!-- order summary -->
+                <div class="order-summary">
+                    <h2>Order Summary</h2>
+                    <div class="order-list-container">
+                        <!-- <div class="order-item">
+                            <img src="../../media/sampImg.png" alt="product image">
+                            <div class="order-item-info">
+                                <p id="productName"></p>
+                                <p id="productPrice"></p>
+                                <p id="productQuantity"></p>
+                                <p id="productSubtotal"></p>
+                            </div>
+                        </div> -->
+
+                    </div>
+                    <div class="total-box">
+                        <h2 id="totalPrice">Total: PHP 0</h2>
+                    </div>
+                </div>
+
+                <div class="buttons">
+                    <button type="submit" id="submitButton">Checkout</button>
+                    <button type="reset" id="resetButton">Reset</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="../js/CHECKOUTDROPDOWN.js"></script>
+    <script type="module" src="../js/checkout.js"></script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+
+#title {
+    font-weight: bold;
+}
+
+#logo {
+    width: 200px;
+}
+
+.login-form {
+    
+}
+
+.login-form form {
+    margin: 20px 0;
+}
+
+.login-form form input {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.login-form form button {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+}

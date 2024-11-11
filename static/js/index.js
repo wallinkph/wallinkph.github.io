@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    window.location.href = "../html/login.html";
+    window.location.href = "static/html/login.html";
 });
 
 

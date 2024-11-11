@@ -97,8 +97,8 @@ function submitButtonListener() {
         orderDetailsArray.push(orderDetails);
         localStorage.setItem('pendingOrders', JSON.stringify(orderDetailsArray));
 
-        if (paymentMethodSelect.value === "gcash") window.location.href = "../html/CHECKOUTGCASHQR.html";
-        else window.location.href = "../html/CHECKOUTCOD.html";
+        if (paymentMethodSelect.value === "gcash") window.location.href = "static/html/CHECKOUTGCASHQR.html";
+        else window.location.href = "static/html/CHECKOUTCOD.html";
     });
 }
 

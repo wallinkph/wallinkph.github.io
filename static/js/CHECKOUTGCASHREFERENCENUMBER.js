@@ -14,7 +14,7 @@ function nextButtonListener() {
         if (fileName === 'No file chosen') {
             return;
         } else {
-            window.location.href = "../html/CHECKOUTPENDING.html";
+            window.location.href = "static/html/CHECKOUTPENDING.html";
         }
 
     });

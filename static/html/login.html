@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="../css/login.css">
+    <link rel="stylesheet" href="../css/BASE.css">
+</head>
+<body>
+    <div class="containter">
+        <div class="content-override">
+            <h1 id="title">WALLINK</h1>
+            <img src="../../media/wallinkRound.png" alt="Wallink logo" id="logo">
+            <div class="login-form">
+                <form action="" method="POST">
+                    <h2>Login to your account</h2>
+                    <div class="username-box">
+                        <input type="text" name="username" id="username" placeholder="Username" required>
+                        <p id="usernameErrorText"></p>
+                    </div>
+                    <div class="email-box">
+                        <input type="text" name="email" id="email" placeholder="Email" required>
+                        <p id="emailErrorText"></p>
+                    </div>
+                    <div class="password-box">
+                        <input type="password" name="password" id="password" placeholder="Password" required>
+                        <p id="passwordErrorText"></p>
+                    </div>
+                    <button type="submit" id="submitButton">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="../js/login.js"></script>
+</body>
+</html>

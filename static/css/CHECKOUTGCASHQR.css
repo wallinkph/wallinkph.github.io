@@ -1,0 +1,22 @@
+#qrCode {
+    width: 200px;
+    height: 200px;
+    margin: 20px 0;
+}
+
+/* dark gray */
+#nextButton {
+    padding: 12px 50px;
+    margin: 20px 0;
+    border: none;
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+    cursor: pointer;
+    text-align: center;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+}
+
+#nextButton:hover {
+    background-color: #000;
+}

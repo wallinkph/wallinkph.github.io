@@ -1,0 +1,54 @@
+.item-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.saveButton {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+}
+
+.saveButton:hover {
+    background-color: #0056b3;
+}
+
+.removeFromCartButton {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    background-color: #dc3545;
+    color: #fff;
+    cursor: pointer;
+}
+
+.removeFromCartButton:hover {
+    background-color: #c82333;
+}
+
+#homeButton {
+    flex: 1;
+    padding: 20px;
+    background-color: #007bff;
+    text-align: center;
+    cursor: pointer;
+    color: #fff;
+    border: none;
+
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+}
+
+#homeButton:hover {
+    background-color: #0056b3;
+}

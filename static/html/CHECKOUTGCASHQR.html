@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gcash QR</title>
+    <link rel="stylesheet" href="../css/CHECKOUTGCASHQR.css">
+    <link rel="stylesheet" href="../css/BASE.css">
+</head>
+<body>
+    <header>
+        <img src="../../media/wallinkRound.png" alt="Wallink logo" id="logo">
+        <h2><a href="store.html" style="text-decoration: none; color: black;">WALLINK</a></h2>
+    </header>
+    <div class="container">
+        <div class="content-override">
+            <h1>GCash QR</h1>
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=gcash://scan/?m=09938248208&a=99999999.00&d=Pay%20for%20your%20order" alt="GCash QR" id="qrCode">
+            <h3>Scan the QR code to pay</h3>
+            <h3 id="amountToPay">PHP 99999999.00</h3>
+            <h3>09938248208</h3>
+            <h3>Althea Wet</h3>
+            <button id="nextButton">Done?</button>
+        </div>
+    </div>
+
+    <script type="module" src="../js/CHECKOUTGCASHQR.js"></script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+input {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    outline: none;
+}
+
+#checkoutForm, .psuedoForm {
+    width: 70%;
+    margin: 0 auto;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #f2f2f2;
+}
+
+.header-wrapper {
+    margin-bottom: 20px;
+}
+
+select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    outline: none;
+}
+
+/* #deliveryNoteInput {
+    overflow: auto;
+} */
+
+
+/* <div class="delivery-note-box">
+<label for="deliveryNote">Delivery Note</label><br>
+<textarea name="deliveryNote" id="deliveryNoteInput" cols="" rows="10" placeholder="Delivery Note"></textarea>
+</div> */
+
+#deliveryNoteInput {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    outline: none;
+    resize: none;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+#submitButton {
+    flex: 9;
+    padding: 12px 20px;
+    margin: 2px;
+    border: none;
+    border-radius: 5px;
+    background-color: #28a745;
+    color: #fff;
+    cursor: pointer;
+    text-align: center;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+}
+
+#submitButton:hover {
+    background-color: #218838;
+}
+
+#resetButton {
+    flex: 1;
+    padding: 12px 20px;
+    margin: 2px;
+    border: none;
+    border-radius: 5px;
+    background-color: #dc3545;
+    color: #fff;
+    cursor: pointer;
+    text-align: center;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+}
+
+#resetButton:hover {
+    background-color: #c82333;
+}

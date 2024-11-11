@@ -29,7 +29,7 @@ function generatePendingOrders(numberOfOrders, orderDetails) {
         pendingListContainer.appendChild(pendingItem);
         document.getElementById(buttonId).addEventListener('click', () => {
             localStorage.setItem('selectedOrder', JSON.stringify(orderDetails[i]));
-            window.location.href = "static/html/CHECKOUTPENDINGDETAILS.html";
+            window.location.href = "../html/CHECKOUTPENDINGDETAILS.html";
         });
     }
 }
@@ -37,21 +37,21 @@ function generatePendingOrders(numberOfOrders, orderDetails) {
 function homeButtonListener() {
     const checkoutButton = document.getElementById("homeButton");
     checkoutButton.addEventListener("click", () => {
-        window.location.href = "static/html/store.html";
+        window.location.href = "../html/store.html";
     });
 }
 
 function viewCartButtonListener() {
     const viewCartButton = document.getElementById("viewCartButton");
     viewCartButton.addEventListener("click", () => {
-        window.location.href = "static/html/cart.html";
+        window.location.href = "../html/cart.html";
     });
 }
 
 function pendingOrdersListener() {
     const pendingOrdersButton = document.getElementById("pendingOrdersButton");
     pendingOrdersButton.addEventListener("click", () => {
-        window.location.href = "static/html/CHECKOUTPENDING.html";
+        window.location.href = "../html/CHECKOUTPENDING.html";
     });
 }
 

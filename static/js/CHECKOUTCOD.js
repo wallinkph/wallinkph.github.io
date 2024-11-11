@@ -3,7 +3,7 @@ import { openDatabase, addData, getData, updateData, deleteData } from './DB.js'
 function nextButtonListener() {
     const nextButton = document.getElementById("nextButton");
     nextButton.addEventListener("click", () => {
-        window.location.href = "../html/CHECKOUTPENDING.html";
+        window.location.href = "static/html/CHECKOUTPENDING.html";
     });
 }
 

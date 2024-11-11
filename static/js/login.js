@@ -43,7 +43,7 @@ function submitButtonListener() {
         localStorage.setItem("email", email);
         localStorage.setItem("password", password);
 
-        window.location.href = "../html/welcome.html";
+        window.location.href = "static/html/welcome.html";
     });
 }
 

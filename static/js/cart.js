@@ -99,21 +99,21 @@ function checkoutButtonListener() {
             alert('No items in cart.');
             return;
         }
-        window.location.href = "../html/checkout.html";
+        window.location.href = "static/html/checkout.html";
     });
 }
 
 function pendingOrdersListener() {
     const pendingOrdersButton = document.getElementById("pendingOrdersButton");
     pendingOrdersButton.addEventListener("click", () => {
-        window.location.href = "../html/CHECKOUTPENDING.html";
+        window.location.href = "static/html/CHECKOUTPENDING.html";
     });
 }
 
 function homeButtonListener() {
     const checkoutButton = document.getElementById("homeButton");
     checkoutButton.addEventListener("click", () => {
-        window.location.href = "../html/store.html";
+        window.location.href = "static/html/store.html";
     });
 }
 

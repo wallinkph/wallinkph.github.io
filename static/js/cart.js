@@ -24,8 +24,11 @@ function generateGridItems(numberOfItems, productDetails) {
                     <h2 class="itemPrice">PHP ${productDetails[i].price}</h2>
                     <p class="inStocks">In stocks: ${productDetails[i].stock}</p>
                     <div class="increment-box">
+                        <button class="incrementButton" id="incrementButton-${i}">+</button>
                         <input type="number" class="numberInput" id="${inputId}" value="${productDetails[i].quantity}" min="0" max="10" step="1">
+                        <button class="decrementButton" id="decrementButton-${i}">-</button>
                     </div>
+                    <p>${productDetails[i].referenceNumber}</p>
                 </div>
                 <div class="item-buttons">
                     <button class="saveButton" id="${buttonId}">Save</button>
@@ -49,6 +52,15 @@ function generateGridItems(numberOfItems, productDetails) {
                 document.getElementById(inputId).style.border = '1px solid red';
                 setTimeout(() => document.getElementById(inputId).style.border = '1px solid #ccc', 2000);
             }
+        });
+        document.getElementById(`incrementButton-${i}`).addEventListener('click', () => {
+            const input = document.getElementById(inputId);
+            // limit is the max stock of the item
+            input.value = Math.min(parseInt(input.value, 10) + 1, productDetails[i].stock);
+        });
+        document.getElementById(`decrementButton-${i}`).addEventListener('click', () => {
+            const input = document.getElementById(inputId);
+            input.value = Math.max(parseInt(input.value, 10) - 1, 0);
         });
         document.getElementById(removeButtonId).addEventListener('click', () => {
             removeFromCart(productDetails[i].name);

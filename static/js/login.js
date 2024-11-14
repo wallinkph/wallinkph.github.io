@@ -4,42 +4,34 @@ function submitButtonListener() {
     const submitButton = document.getElementById("submitButton");
     submitButton.addEventListener("click", async (e) => {
         e.preventDefault();
-        const username = document.getElementById("username").value;
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
-        console.log(email, password);
 
-        // try {
-        //     const response = await fetch("/login", {
-        //         method: "POST",
-        //         body: JSON.stringify({
-        //             email: email,
-        //             password: password
-        //         }),
-        //         headers: {
-        //             "Content-Type": "application/json"
-        //         }
-        //     });
+        // Validation
+        let isValid = true;
+        if (!email) {
+            alert("Email is required");
+            isValid = false;
+        } else {
+            if (email.includes("@")) {
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                    alert("Email is invalid");
+                    isValid = false;
+                }
+            } else {
+                if (!/^[a-zA-Z0-9-_]*$/.test(email)) {
+                    alert("Username can only contain letters, numbers, - and _");
+                    isValid = false;
+                }
+            }
+        }
+        if (!password) {
+            alert("Password is required");
+            isValid = false;
+        }
+        if (!isValid) return;
+        // login(email, password);
 
-        //     const data = await response.json();
-        //     switch (response.status) {
-        //         case 200:
-        //             window.location.href = "/welcome";
-        //             break;
-        //         case 401:
-        //             alert(data.message);
-        //             break;
-        //         default:
-        //             alert("Something went wrong");
-        //             break;
-        //     }
-        // } catch (error) {
-        //     console.error("Error:", error);
-        // }
-
-        // save credentials
-        // HARD CODED
-        localStorage.setItem("username", username);
         localStorage.setItem("email", email);
         localStorage.setItem("password", password);
 

@@ -2,6 +2,7 @@ import { openDatabase, addData, getData, updateData, deleteData } from './DB.js'
 import { addError } from "./ADDERROR.js";
 
 const cart = JSON.parse(localStorage.getItem('cartItems')) || [];
+let newStocks = [];
 
 function defaultValues() {
     //  the hell is this
@@ -96,6 +97,8 @@ function submitButtonListener() {
 
         orderDetailsArray.push(orderDetails);
         localStorage.setItem('pendingOrders', JSON.stringify(orderDetailsArray));
+        localStorage.setItem('newStocks', JSON.stringify(newStocks));
+        localStorage.removeItem('cartItems');
 
         if (paymentMethodSelect.value === "gcash") window.location.href = "../html/CHECKOUTGCASHQR.html";
         else window.location.href = "../html/CHECKOUTCOD.html";
@@ -126,10 +129,15 @@ function generateOrderItems(numberOfItems, orderDetails) {
                 <p class="productPrice">PHP ${orderDetails[i].price}</p>
                 <p class="productQuantity">Quantity: ${orderDetails[i].quantity}</p>
                 <p class="productSubtotal">Subtotal: PHP ${orderDetails[i].subtotal}</p>
+                <p>${orderDetails[i].referenceNumber}</p>
             </div>
         `;
         orderListContainer.appendChild(orderItem);
         totalPrices += orderDetails[i].subtotal;
+        newStocks.push({
+            referenceNumber: orderDetails[i].referenceNumber,
+            newStock: orderDetails[i].stock - orderDetails[i].quantity
+        });
     }
     document.getElementById("totalPrice").innerText = `Total: PHP ${totalPrices}`;
 

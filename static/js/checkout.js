@@ -47,50 +47,78 @@ function submitButtonListener() {
     submitButton.addEventListener("click", (e) => {
         e.preventDefault();
 
-        const name = document.getElementById("nameInput").value.trim() || "";
-        const contact = document.getElementById("contactInput").value.trim() || "";
-        const email = document.getElementById("emailInput").value.trim() || "";
-        const country = document.getElementById("countryDropdown").value || "";
-        const province = document.getElementById("provinceDropdown").value || "";
-        const city = document.getElementById("cityDropdown").value || "";
-        const address = document.getElementById("addressInput").value.trim() || "";
-        const deliveryNote = document.getElementById("deliveryNoteInput").value.trim() || "";
-        const paymentMethod = document.getElementById("paymentMethodDropdown").value || "";
-        const deliveryOption = document.getElementById("deliveryOptionDropdown").value || "";
+        const name = document.getElementById("nameInput").value.trim();
+        const contact = document.getElementById("contactInput").value.trim();
+        const email = document.getElementById("emailInput").value.trim();
+        const country = document.getElementById("countryDropdown").value;
+        const province = document.getElementById("provinceDropdown").value;
+        const city = document.getElementById("cityDropdown").value;
+        const address = document.getElementById("addressInput").value.trim();
+        const deliveryNote = document.getElementById("deliveryNoteInput").value.trim();
+        const paymentMethod = document.getElementById("paymentMethodDropdown").value;
+        const deliveryOption = document.getElementById("deliveryOptionDropdown").value;
         const date = document.getElementById("dateInput").value;
         const time = document.getElementById("timeInput").value;
 
-        if (!name) addError(document.getElementById("nameInput"));
-        if (!contact) addError(document.getElementById("contactInput"));
-        if (!country) addError(document.getElementById("countryDropdown"));
-        if (!province) addError(document.getElementById("provinceDropdown"));
-        if (!city) addError(document.getElementById("cityDropdown"));
-        if (!address) addError(document.getElementById("addressInput"));
-        if (!paymentMethod) addError(document.getElementById("paymentMethodDropdown"));
-        if (!deliveryOption) addError(document.getElementById("deliveryOptionDropdown"));
-        if (!date) addError(document.getElementById("dateInput"));
-        if (date < localStorage.getItem('minDate')) addError(document.getElementById("dateInput"));
-        if (!time) addError(document.getElementById("timeInput"));
+        // Array of fields to check for emptiness, in order
+        const fields = [
+            { value: name, element: document.getElementById("nameInput") },
+            { value: contact, element: document.getElementById("contactInput") },
+            { value: email, element: document.getElementById("emailInput") },
+            { value: country, element: document.getElementById("countryDropdown") },
+            { value: province, element: document.getElementById("provinceDropdown") },
+            { value: city, element: document.getElementById("cityDropdown") },
+            { value: address, element: document.getElementById("addressInput") },
+            { value: paymentMethod, element: document.getElementById("paymentMethodDropdown") },
+            { value: deliveryOption, element: document.getElementById("deliveryOptionDropdown") },
+            { value: date, element: document.getElementById("dateInput") },
+            { value: time, element: document.getElementById("timeInput") }
+        ];
 
-        if (!name || !contact || !country || !province || !city || !address || !paymentMethod || !deliveryOption || !date || !time) return;
+        let firstEmptyField = null;
+        fields.forEach((field) => {
+            if (!field.value) {
+                addError(document.getElementById(`${field.element.id}ErrorText`) || undefined, field.element, "This field is required");
+                if (!firstEmptyField) firstEmptyField = field.element;
+            }
+        });
 
-        // save to local storage
+        // input validation
+        // below
+
+        // check name if it has special characters or numbers
+        if (!/^[a-zA-Z\s]*$/.test(name)) {
+            addError(document.getElementById("nameInputErrorText"), document.getElementById("nameInput"), "Invalid name format (no special characters or numbers)");
+            if (!firstEmptyField) firstEmptyField = document.getElementById("nameInput");
+        }
+
+        // check if contact is a number and has 11 digits
+        if (contact.length !== 11 || isNaN(contact)) {
+            addError(document.getElementById("contactInputErrorText"), document.getElementById("contactInput"), "Invalid contact number");
+            if (!firstEmptyField) firstEmptyField = document.getElementById("contactInput");
+        }
+
+        // check if email is valid format
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            addError(document.getElementById("emailInputErrorText"), document.getElementById("emailInput"), "Invalid email format");
+            if (!firstEmptyField) firstEmptyField = document.getElementById("emailInput");
+        }
+
+        if (date < localStorage.getItem('minDate')) {
+            addError(document.getElementById("dateInputErrorText"), document.getElementById("dateInput"), "Invalid date");
+            if (!firstEmptyField) firstEmptyField = document.getElementById("dateInput");
+        }
+
+        if (firstEmptyField) {
+            firstEmptyField.focus();
+            return;
+        }
+
         const orderDetailsArray = JSON.parse(localStorage.getItem('pendingOrders')) || [];
-        const length = orderDetailsArray.length;
         const orderDetails = {
-            orderNumber: length,
-            name: name,
-            contact: contact,
-            email: email,
-            country: country,
-            province: province,
-            city: city,
-            address: address,
-            deliveryNote: deliveryNote,
-            paymentMethod: paymentMethod,
-            deliveryOption: deliveryOption,
-            date: date,
-            time: time,
+            orderNumber: Math.floor(Math.random() * 1000000000),
+            name, contact, email, country, province, city, address,
+            deliveryNote, paymentMethod, deliveryOption, date, time,
             orderItems: cart,
             status: "pending"
         };
@@ -100,10 +128,14 @@ function submitButtonListener() {
         localStorage.setItem('newStocks', JSON.stringify(newStocks));
         localStorage.removeItem('cartItems');
 
-        if (paymentMethodSelect.value === "gcash") window.location.href = "../html/CHECKOUTGCASHQR.html";
-        else window.location.href = "../html/CHECKOUTCOD.html";
+        if (paymentMethodSelect.value === "gcash") {
+            window.location.href = "../html/CHECKOUTGCASHQR.html";
+        } else {
+            window.location.href = "../html/CHECKOUTCOD.html";
+        }
     });
 }
+
 
 function resetButtonListener() {
     const resetButton = document.getElementById("resetButton");

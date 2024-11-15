@@ -19,7 +19,7 @@ function generatePendingOrders(numberOfOrders, orderDetails) {
         }
 
         pendingItem.innerHTML = `
-            <h1>Order Number: ${orderDetails[i].orderNumber + 1}</h1>
+            <h1>Reference No. ${orderDetails[i].orderNumber + 1}</h1>
             <p>Price: PHP ${totalPrices}</p>
             <p>Date: ${orderDetails[i].date} (${orderDetails[i].time})</p>
             <p>Payment: ${orderDetails[i].paymentMethod} - ${orderDetails[i].deliveryOption}</p>

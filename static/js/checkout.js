@@ -78,24 +78,42 @@ function submitButtonListener() {
         let firstEmptyField = null;
         fields.forEach((field) => {
             if (!field.value) {
-                addError(field.element); // Highlight the empty field
-                if (!firstEmptyField) firstEmptyField = field.element; // Store the first empty field
+                addError(document.getElementById(`${field.element.id}ErrorText`) || undefined, field.element, "This field is required");
+                if (!firstEmptyField) firstEmptyField = field.element;
             }
         });
 
-        // Additional validation for the date minimum
+        // input validation
+        // below
+
+        // check name if it has special characters or numbers
+        if (!/^[a-zA-Z\s]*$/.test(name)) {
+            addError(document.getElementById("nameInputErrorText"), document.getElementById("nameInput"), "Invalid name format (no special characters or numbers)");
+            if (!firstEmptyField) firstEmptyField = document.getElementById("nameInput");
+        }
+
+        // check if contact is a number and has 11 digits
+        if (contact.length !== 11 || isNaN(contact)) {
+            addError(document.getElementById("contactInputErrorText"), document.getElementById("contactInput"), "Invalid contact number");
+            if (!firstEmptyField) firstEmptyField = document.getElementById("contactInput");
+        }
+
+        // check if email is valid format
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            addError(document.getElementById("emailInputErrorText"), document.getElementById("emailInput"), "Invalid email format");
+            if (!firstEmptyField) firstEmptyField = document.getElementById("emailInput");
+        }
+
         if (date < localStorage.getItem('minDate')) {
-            addError(document.getElementById("dateInput"));
+            addError(document.getElementById("dateInputErrorText"), document.getElementById("dateInput"), "Invalid date");
             if (!firstEmptyField) firstEmptyField = document.getElementById("dateInput");
         }
 
-        // If there's an empty field, focus on it and exit
         if (firstEmptyField) {
             firstEmptyField.focus();
             return;
         }
 
-        // Proceed if all fields are filled
         const orderDetailsArray = JSON.parse(localStorage.getItem('pendingOrders')) || [];
         const orderDetails = {
             orderNumber: Math.floor(Math.random() * 1000000000),

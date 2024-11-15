@@ -15,19 +15,12 @@ function submitButtonListener() {
         if (!email) {
             addError(document.getElementById("emailErrorText"), emailInput, "Email is required");
             isValid = false;
-        } else {
-            if (email.includes("@")) {
-                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                    addError(document.getElementById("emailErrorText"), emailInput, "Invalid email format");
-                    isValid = false;
-                }
-            } else {
-                if (!/^[a-zA-Z0-9-_]*$/.test(email)) {
-                    addError(document.getElementById("emailErrorText"), emailInput, "Invalid email format (no special characters)");
-                    isValid = false;
-                }
-            }
         }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            addError(document.getElementById("emailErrorText"), emailInput, "Invalid email format");
+            isValid = false;
+        }
+
         if (!password) {
             addError(document.getElementById("passwordErrorText"), passwordInput, "Password is required");
             isValid = false;

@@ -12,24 +12,3 @@ export function addErrorBorder(element, elementInteract=element) {
 export const addError = (element, elementInteract=element) => {
     addErrorBorder(elementInteract);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// DB SECTION

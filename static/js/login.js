@@ -10,23 +10,39 @@ function submitButtonListener() {
         const email = emailInput.value;
         const password = passwordInput.value;
 
+        const fields = [
+            { value: email, element: emailInput },
+            { value: password, element: passwordInput }
+        ];
+
+        let firstEmptyField = null;
+        fields.forEach((field) => {
+            if (!field.value) {
+                addError(document.getElementById(`${field.element.id}ErrorText`) || undefined, field.element, "This field is required");
+                if (!firstEmptyField) firstEmptyField = field.element;
+            }
+        });
+
         // Validation
-        let isValid = true;
         if (!email) {
             addError(document.getElementById("emailErrorText"), emailInput, "Email is required");
-            isValid = false;
+            if (!firstEmptyField) firstEmptyField = emailInput;
         }
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
             addError(document.getElementById("emailErrorText"), emailInput, "Invalid email format");
-            isValid = false;
+            if (!firstEmptyField) firstEmptyField = emailInput;
+        }
+
+        if (firstEmptyField) {
+            firstEmptyField.focus();
+            return;
         }
 
         if (!password) {
             addError(document.getElementById("passwordErrorText"), passwordInput, "Password is required");
-            isValid = false;
+            if (!firstEmptyField) firstEmptyField = passwordInput;
         }
-        if (!isValid) return;
-        // login(email, password);
+
 
         localStorage.setItem("email", email);
         localStorage.setItem("password", password);

@@ -1,7 +1,18 @@
-import { openDatabase, addData, getData, updateData, deleteData } from './DB.js';
+import { openDB, addData, getData, getAllData, updateData, deleteData, clearData, closeDB } from "./DB.js";
 import { addError } from "./ADDERROR.js";
 
-const cart = JSON.parse(localStorage.getItem('cartItems')) || [];
+let db = null;
+let cart = [];
+
+async function initCart() {
+    try {
+        cart = await getAllData(db, 'cartItems');
+        if (!cart) cart = [];
+    } catch (error) {
+        console.error("Error:", error);
+    }
+}
+
 let newStocks = [];
 
 function defaultValues() {
@@ -44,7 +55,7 @@ function defaultValues() {
 function submitButtonListener() {
     const submitButton = document.getElementById("submitButton");
     const paymentMethodSelect = document.getElementById("paymentMethodDropdown");
-    submitButton.addEventListener("click", (e) => {
+    submitButton.addEventListener("click", async (e) => {
         e.preventDefault();
 
         const name = document.getElementById("nameInput").value.trim();
@@ -87,7 +98,7 @@ function submitButtonListener() {
         // below
 
         // check name if it has special characters or numbers
-        if (!/^[a-zA-Z\s]*$/.test(name)) {
+        if (!/^[a-zA-Z\s.]*$/.test(name)) {
             addError(document.getElementById("nameInputErrorText"), document.getElementById("nameInput"), "Invalid name format (no special characters or numbers)");
             if (!firstEmptyField) firstEmptyField = document.getElementById("nameInput");
         }
@@ -126,7 +137,9 @@ function submitButtonListener() {
         orderDetailsArray.push(orderDetails);
         localStorage.setItem('pendingOrders', JSON.stringify(orderDetailsArray));
         localStorage.setItem('newStocks', JSON.stringify(newStocks));
-        localStorage.removeItem('cartItems');
+
+        // clear cart
+        await clearData(db, "cartItems");
 
         if (paymentMethodSelect.value === "gcash") {
             window.location.href = "../html/CHECKOUTGCASHQR.html";
@@ -200,31 +213,13 @@ async function fetchOrderItems() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    db = await openDB();
+    await initCart();
+
     // fetchOrderItems();
     submitButtonListener();
     resetButtonListener();
     defaultValues();
     generateOrderItems(cart.length, cart);
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// DB SECTION

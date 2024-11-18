@@ -1,4 +1,4 @@
-import { openDatabase, addData, getData, updateData, deleteData } from './DB.js';
+import { openDB, addData, getData, getAllData, updateData, deleteData, clearData, closeDB } from "./DB.js";
 
 function nextButtonListener() {
     const nextButton = document.getElementById("nextButton");

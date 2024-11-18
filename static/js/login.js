@@ -1,5 +1,5 @@
 import { addError } from "./ADDERROR.js";
-import { openDatabase, addData, getData, updateData, deleteData } from './DB.js';
+import { openDB, addData, getData, getAllData, updateData, deleteData, clearData, closeDB } from "./DB.js";
 
 function submitButtonListener() {
     const submitButton = document.getElementById("submitButton");

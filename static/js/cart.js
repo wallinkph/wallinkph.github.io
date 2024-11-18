@@ -36,6 +36,7 @@ function generateGridItems(numberOfItems, productDetails) {
                 </div>
             </div>
         `;
+
         gridContainer.appendChild(gridItem);
         document.getElementById(buttonId).addEventListener('click', () => {
             const quantity = parseInt(document.getElementById(inputId).value, 10);

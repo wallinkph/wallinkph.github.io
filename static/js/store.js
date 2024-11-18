@@ -23,6 +23,10 @@ function addReferenceNumbers(products) {
 }
 addReferenceNumbers(productDetails);
     
+function saveSelectedItem(item) {
+    localStorage.setItem('selectedItem', JSON.stringify(item));
+    window.location.href = "../html/item.html";
+}
 
 function generateGridItems(numberOfItems, productDetails) {
     const gridContainer = document.querySelector('.grid-container');
@@ -53,6 +57,11 @@ function generateGridItems(numberOfItems, productDetails) {
             </div>
         `;
         gridContainer.appendChild(gridItem);
+
+        gridItem.querySelector('.itemName').addEventListener('click', () => {
+            saveSelectedItem(productDetails[i]);
+        });
+
         document.getElementById(buttonId).addEventListener('click', () => {
             const quantity = parseInt(document.getElementById(inputId).value, 10);
             if (quantity > 0) {

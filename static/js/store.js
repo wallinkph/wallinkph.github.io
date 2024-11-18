@@ -1,6 +1,16 @@
-import { openDatabase, addData, getData, updateData, deleteData } from './DB.js';
+import { openDB, addData, getData, getAllData, updateData, deleteData, clearData, closeDB } from "./DB.js";
 
-const cart = JSON.parse(localStorage.getItem('cartItems')) || [];
+let db = null;
+let cart = [];
+
+async function refreshCart() {
+    try {
+        cart = await getAllData(db, 'cartItems');
+        if (!cart) cart = [];
+    } catch (error) {
+        console.error("Error:", error);
+    }
+}
 
 const productDetails = [
     { name: "Vanilla", price: 435, stock: 15, imageSrc: "../../media/ice-creams/Vanilla_ice_cream.png" },
@@ -23,6 +33,10 @@ function addReferenceNumbers(products) {
 }
 addReferenceNumbers(productDetails);
     
+function saveSelectedItem(item) {
+    localStorage.setItem('selectedItem', JSON.stringify(item));
+    window.location.href = "../html/item.html";
+}
 
 function generateGridItems(numberOfItems, productDetails) {
     const gridContainer = document.querySelector('.grid-container');
@@ -53,10 +67,15 @@ function generateGridItems(numberOfItems, productDetails) {
             </div>
         `;
         gridContainer.appendChild(gridItem);
-        document.getElementById(buttonId).addEventListener('click', () => {
+
+        gridItem.querySelector('.itemName').addEventListener('click', () => {
+            saveSelectedItem(productDetails[i]);
+        });
+
+        document.getElementById(buttonId).addEventListener('click', async () => {
             const quantity = parseInt(document.getElementById(inputId).value, 10);
             if (quantity > 0) {
-                addToCart({
+                await addToCart({
                     inputId: inputId,
                     buttonId: buttonId,
                     name: productDetails[i].name,
@@ -67,6 +86,8 @@ function generateGridItems(numberOfItems, productDetails) {
                     imageSrc: productDetails[i].imageSrc,
                     referenceNumber: productDetails[i].referenceNumber
                 });
+                alert(`${quantity} ${productDetails[i].name} added to cart.`);
+                cart = refreshCart();
             } else {
                 document.getElementById(inputId).style.border = '1px solid red';
                 setTimeout(() => document.getElementById(inputId).style.border = '1px solid #ccc', 2000);
@@ -84,35 +105,17 @@ function generateGridItems(numberOfItems, productDetails) {
     }
 }
 
-function addToCart(item) {
-    const existingItem = cart.find(cartItem => cartItem.name === item.name);
-    if (existingItem) {
-        existingItem.quantity = item.quantity;
-        existingItem.subtotal = item.subtotal;
-    } else {
-        cart.push(item);
-    }
-    localStorage.setItem('cartItems', JSON.stringify(cart));
-}
-
-async function fetchGridItems() {
+async function addToCart(item) {
     try {
-        const response = await fetch("/api/products", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
-        
-        const data = await response.json();
-        switch (response.status) {
-            case 200:
-                generateGridItems(data.length, data);
-                break;
-            default:
-                alert("Something went wrong");
-                break;
+        const existingItem = await getData(db, 'cartItems', item.referenceNumber);
+        if (existingItem) {
+            existingItem.quantity = item.quantity;
+            existingItem.subtotal = existingItem.price * item.quantity;
+            await updateData(db, 'cartItems', existingItem);
+        } else {
+            await addData(db, 'cartItems', { ...item });
         }
+        console.log('Item added to cart:', item);
     } catch (error) {
         console.error("Error:", error);
     }
@@ -144,16 +147,19 @@ function pendingOrdersListener() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+function closeDBConnection() {
+    const closeDBButton = document.getElementById("closeDBButton");
+    closeDBButton.addEventListener("click", () => {
+        closeDB(db);
+        console.log("Database connection closed.");
+    });
+}
 
-    // newStocks.push({
-    //     referenceNumber: orderDetails[i].referenceNumber,
-    //     newStock: orderDetails[i].stock - orderDetails[i].quantity
-    // });
-    // localStorage.setItem('newStocks', JSON.stringify(newStocks));
+document.addEventListener('DOMContentLoaded', async () => {
+    db = await openDB();
+    await refreshCart();
+    closeDBConnection();
 
-
-    // replace the old stock from variable productDetails
     const newStocks = JSON.parse(localStorage.getItem('newStocks')) || [];
     newStocks.forEach(newStock => {
         const productIndex = productDetails.findIndex(product => product.referenceNumber === newStock.referenceNumber);
@@ -164,30 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     generateGridItems(productDetails.length, productDetails);
-    // fetchGridItems();
     checkoutButtonListener();
     viewCartButtonListener();
     pendingOrdersListener();
-    // localStorage.removeItem('cartItems');
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// DB SECTION

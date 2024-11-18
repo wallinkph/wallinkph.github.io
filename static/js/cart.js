@@ -1,8 +1,17 @@
-import { openDatabase, addData, getData, updateData, deleteData } from './DB.js';
+import { openDB, addData, getData, getAllData, updateData, deleteData, clearData, closeDB } from "./DB.js";
 
-const cart = JSON.parse(localStorage.getItem('cartItems')) || [];
-const dbName = 'cartDB';
-const storeName = 'cartItems';
+let db = null;
+let cart = [];
+
+async function initCart() {
+    try {
+        cart = await getAllData(db, 'cartItems');
+        if (!cart) cart = [];
+    } catch (error) {
+        console.error("Error:", error);
+    }
+}
+
 
 function generateGridItems(numberOfItems, productDetails) {
     const gridContainer = document.querySelector('.grid-container');
@@ -36,17 +45,19 @@ function generateGridItems(numberOfItems, productDetails) {
                 </div>
             </div>
         `;
+
         gridContainer.appendChild(gridItem);
-        document.getElementById(buttonId).addEventListener('click', () => {
+        document.getElementById(buttonId).addEventListener('click', async () => {
             const quantity = parseInt(document.getElementById(inputId).value, 10);
             if (quantity > 0) {
-                addToCart({
+                await addToCart({
                     name: productDetails[i].name,
                     price: productDetails[i].price,
                     quantity: quantity,
                     subtotal: productDetails[i].price * quantity,
                     stock: productDetails[i].stock,
-                    imageSrc: productDetails[i].imageSrc
+                    imageSrc: productDetails[i].imageSrc,
+                    referenceNumber: productDetails[i].referenceNumber
                 });
             } else {
                 document.getElementById(inputId).style.border = '1px solid red';
@@ -62,24 +73,27 @@ function generateGridItems(numberOfItems, productDetails) {
             const input = document.getElementById(inputId);
             input.value = Math.max(parseInt(input.value, 10) - 1, 0);
         });
-        document.getElementById(removeButtonId).addEventListener('click', () => {
-            removeFromCart(productDetails[i].name);
+        document.getElementById(removeButtonId).addEventListener('click', async () => {
+            await removeFromCart(productDetails[i].referenceNumber);
         });
     }
 }
 
-function addToCart(item) {
-    const existingItem = cart.find(cartItem => cartItem.name === item.name);
+async function addToCart(item) {
+    const existingItem = await getData(db, 'cartItems', item.referenceNumber);
     if (existingItem) {
         existingItem.quantity = item.quantity;
         existingItem.subtotal = item.subtotal;
+        await updateData(db, 'cartItems', existingItem);
     } else {
-        cart.push(item);
+        await addData(db, 'cartItems', { ...item });
     }
-    localStorage.setItem('cartItems', JSON.stringify(cart));
+    console.log('Item added to cart:', item);
 }
 
-function initCart() {
+async function init() {
+    await initCart();
+
     if (cart.length === 0) {
         const gridContainer = document.querySelector('.grid-container');
         gridContainer.style.display = 'none';
@@ -96,11 +110,13 @@ function initCart() {
     }
 }
 
-function removeFromCart(name) {
-    const itemIndex = cart.findIndex(cartItem => cartItem.name === name);
-    cart.splice(itemIndex, 1);
-    localStorage.setItem('cartItems', JSON.stringify(cart));
-    location.reload();
+async function removeFromCart(referenceNumber) {
+    try {
+        await deleteData(db, 'cartItems', referenceNumber);
+        location.reload();
+    } catch (error) {
+        console.error("Error:", error);
+    }
 }
 
 function checkoutButtonListener() {
@@ -129,30 +145,11 @@ function homeButtonListener() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    initCart();
+document.addEventListener('DOMContentLoaded', async () => {
+    db = await openDB();
+    await init();
+
     checkoutButtonListener();
     pendingOrdersListener();
     homeButtonListener();
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// DB SECTION using IndexedDB

@@ -1,4 +1,4 @@
-import { openDatabase, addData, getData, updateData, deleteData } from './DB.js';
+import { openDB, addData, getData, getAllData, updateData, deleteData, clearData, closeDB } from "./DB.js";
 
 function storeButtonListener() {
     const button = document.getElementById("storeButton");
@@ -10,7 +10,7 @@ function storeButtonListener() {
 function greetUser() {
     const username = localStorage.getItem("username");
     if (!username) document.getElementById("promptText").innerText = "Welcome!";
-    else document.getElementById("promptText").innerText = `Welcome, ${username}!`;
+    // else document.getElementById("promptText").innerText = `Welcome, ${username}!`;
 }
 
 document.addEventListener("DOMContentLoaded", () => {

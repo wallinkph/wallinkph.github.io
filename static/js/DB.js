@@ -1,63 +1,118 @@
-export function openDatabase(dbName, storeName) {
+export function openDB() {
     return new Promise((resolve, reject) => {
-        const request = indexedDB.open(dbName, 1);
-
+        const request = indexedDB.open("db", 1);
+        request.onerror = (event) => {
+            reject(event.target.error);
+        };
+        request.onsuccess = (event) => {
+            resolve(event.target.result);
+        };
         request.onupgradeneeded = (event) => {
             const db = event.target.result;
-            if (!db.objectStoreNames.contains(storeName)) {
-                db.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
-            }
+
+            // cartItems
+            // minDate
+            // pendingOrders
+            // newStocks
+            // cartItems
+            // totalPrice
+            // selectedOrder
+
+            if (!db.objectStoreNames.contains("cartItems")) db.createObjectStore("cartItems", { keyPath: "referenceNumber" });
+            if (!db.objectStoreNames.contains("minDate")) db.createObjectStore("minDate", { keyPath: "referenceNumber" });
+            if (!db.objectStoreNames.contains("pendingOrders")) db.createObjectStore("pendingOrders", { keyPath: "referenceNumber" });
+            if (!db.objectStoreNames.contains("newStocks")) db.createObjectStore("newStocks", { keyPath: "referenceNumber" });
+            if (!db.objectStoreNames.contains("totalPrice")) db.createObjectStore("totalPrice", { keyPath: "referenceNumber" });
+            if (!db.objectStoreNames.contains("selectedOrder")) db.createObjectStore("selectedOrder", { keyPath: "referenceNumber" });
+            console.log("Database setup complete.");
         };
+    });
+};
 
-        request.onsuccess = (event) => resolve(event.target.result);
-        request.onerror = (event) => reject(event.target.error);
+export function addData(db, table, data) {
+    return new Promise((resolve, reject) => {
+        const transaction = db.transaction(table, "readwrite");
+        const objectStore = transaction.objectStore(table);
+        const request = objectStore.add(data);
+        request.onerror = (event) => {
+            reject(event.target.error);
+        };
+        request.onsuccess = (event) => {
+            resolve(event.target.result);
+        };
     });
 }
 
-export async function addData(dbName, storeName, data) {
-    const db = await openDatabase(dbName, storeName);
+export function getData(db, table, id) {
     return new Promise((resolve, reject) => {
-        const transaction = db.transaction(storeName, 'readwrite');
-        const store = transaction.objectStore(storeName);
-        const request = store.add(data);
-
-        request.onsuccess = () => resolve(request.result);
-        request.onerror = () => reject(request.error);
+        const transaction = db.transaction(table, "readonly");
+        const objectStore = transaction.objectStore(table);
+        const request = objectStore.get(id);
+        request.onerror = (event) => {
+            reject(event.target.error);
+        };
+        request.onsuccess = (event) => {
+            resolve(event.target.result);
+        };
     });
 }
 
-export async function getData(dbName, storeName, id) {
-    const db = await openDatabase(dbName, storeName);
+export function getAllData(db, table) {
     return new Promise((resolve, reject) => {
-        const transaction = db.transaction(storeName, 'readonly');
-        const store = transaction.objectStore(storeName);
-        const request = store.get(id);
-
-        request.onsuccess = () => resolve(request.result);
-        request.onerror = () => reject(request.error);
+        const transaction = db.transaction(table, "readonly");
+        const objectStore = transaction.objectStore(table);
+        const request = objectStore.getAll();
+        request.onerror = (event) => {
+            reject(event.target.error);
+        };
+        request.onsuccess = (event) => {
+            resolve(event.target.result);
+        };
     });
 }
 
-export async function updateData(dbName, storeName, data) {
-    const db = await openDatabase(dbName, storeName);
+export function updateData(db, table, data) {
     return new Promise((resolve, reject) => {
-        const transaction = db.transaction(storeName, 'readwrite');
-        const store = transaction.objectStore(storeName);
-        const request = store.put(data);
-
-        request.onsuccess = () => resolve(request.result);
-        request.onerror = () => reject(request.error);
+        const transaction = db.transaction(table, "readwrite");
+        const objectStore = transaction.objectStore(table);
+        const request = objectStore.put(data);
+        request.onerror = (event) => {
+            reject(event.target.error);
+        };
+        request.onsuccess = (event) => {
+            resolve(event.target.result);
+        };
     });
 }
 
-export async function deleteData(dbName, storeName, id) {
-    const db = await openDatabase(dbName, storeName);
+export function deleteData(db, table, id) {
     return new Promise((resolve, reject) => {
-        const transaction = db.transaction(storeName, 'readwrite');
-        const store = transaction.objectStore(storeName);
-        const request = store.delete(id);
-
-        request.onsuccess = () => resolve(id);
-        request.onerror = () => reject(request.error);
+        const transaction = db.transaction(table, "readwrite");
+        const objectStore = transaction.objectStore(table);
+        const request = objectStore.delete(id);
+        request.onerror = (event) => {
+            reject(event.target.error);
+        };
+        request.onsuccess = (event) => {
+            resolve(event.target.result);
+        };
     });
+}
+
+export function clearData(db, table) {
+    return new Promise((resolve, reject) => {
+        const transaction = db.transaction(table, "readwrite");
+        const objectStore = transaction.objectStore(table);
+        const request = objectStore.clear();
+        request.onerror = (event) => {
+            reject(event.target.error);
+        };
+        request.onsuccess = (event) => {
+            resolve(event.target.result);
+        };
+    });
+}
+
+export function closeDB(db) {
+    db.close();
 }

@@ -67,15 +67,36 @@ function generateOrderItems(numberOfItems, orderDetails) {
             <img src="${orderDetails[i].imageSrc}" alt="Product image">
             <div class="order-item-info">
                 <p class="productName">${orderDetails[i].name}</p>
-                <p class="productPrice">PHP ${orderDetails[i].price}</p>
+                <p class="productPrice">₱${orderDetails[i].price}</p>
                 <p class="productQuantity">Quantity: ${orderDetails[i].quantity}</p>
-                <p class="productSubtotal">Subtotal: PHP ${orderDetails[i].subtotal}</p>
+                <p class="productSize">Size: ${orderDetails[i].size}</p>
+                <p class="productSubtotal">Subtotal: ₱${orderDetails[i].subtotal}</p>
             </div>
         `;
         orderListContainer.appendChild(orderItem);
+
+        // calculate the price relative to the quantity and size
+        // size = small, medium, large and multiply the price by 1.0, 2, 2.5 respectively
+
+        const originalSubtotal = orderDetails[i].subtotal;
+
+        if (orderDetails[i].size === "small") {
+            orderDetails[i].subtotal = orderDetails[i].price * orderDetails[i].quantity;
+        } else if (orderDetails[i].size === "medium") {
+            orderDetails[i].subtotal = orderDetails[i].price * orderDetails[i].quantity * 1.5;
+        } else if (orderDetails[i].size === "large") {
+            orderDetails[i].subtotal = orderDetails[i].price * orderDetails[i].quantity * 2;
+        }
+
+        const productSize = orderItem.querySelector('.productSize');
+        const subTotal = orderItem.querySelector('.productSubtotal');
+        productSize.innerText = `Size: ${orderDetails[i].size}`;
+        subTotal.innerHTML = `Subtotal: ₱${orderDetails[i].subtotal} <span style="text-decoration: underline;">(₱${originalSubtotal} [₱${orderDetails[i].price} x ${orderDetails[i].quantity}] + ₱${orderDetails[i].subtotal - originalSubtotal} [size])</span>`;
+
+
         totalPrices += orderDetails[i].subtotal;
     }
-    document.getElementById("totalPrice").innerText = `Total: PHP ${totalPrices}`;
+    document.getElementById("totalPrice").innerText = `Total: ₱${totalPrices}`;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -84,6 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
             name: item.name,
             price: item.price,
             quantity: item.quantity,
+            size: item.size,
             subtotal: item.subtotal,
             stock: item.stock,
             imageSrc: item.imageSrc

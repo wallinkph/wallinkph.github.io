@@ -23,6 +23,7 @@ function generateGridItems(numberOfItems, productDetails) {
 
         const inputId = productDetails[i].inputId;
         const buttonId = productDetails[i].buttonId;
+        const sizeId = productDetails[i].sizeId;
         const removeButtonId = `removeFromCartButton-${i}`;
 
         gridItem.innerHTML = `
@@ -30,12 +31,20 @@ function generateGridItems(numberOfItems, productDetails) {
             <div class="item-info">
                 <h3 class="itemName" title="${productDetails[i].name}">${productDetails[i].name}</h3>
                 <div class="item-pricing-box">
-                    <h2 class="itemPrice">PHP ${productDetails[i].price}</h2>
+                    <h2 class="itemPrice">₱${productDetails[i].price}</h2>
                     <p class="inStocks">In stocks: ${productDetails[i].stock}</p>
                     <div class="increment-box">
-                        <button class="incrementButton" id="incrementButton-${i}">+</button>
-                        <input type="number" class="numberInput" id="${inputId}" value="${productDetails[i].quantity}" min="0" max="10" step="1">
                         <button class="decrementButton" id="decrementButton-${i}">-</button>
+                        <input type="number" class="numberInput" id="${inputId}" value="${productDetails[i].quantity}" min="0" max="10" step="1">
+                        <button class="incrementButton" id="incrementButton-${i}">+</button>
+                    </div>
+                    <div class="size-box">
+                        <label for="size">Size:</label>
+                        <select name="size" id="${sizeId}">
+                            <option value="small" selected>Small</option>
+                            <option value="medium">Medium</option>
+                            <option value="large">Large</option>
+                        </select>
                     </div>
                     <p>${productDetails[i].referenceNumber}</p>
                 </div>
@@ -47,6 +56,10 @@ function generateGridItems(numberOfItems, productDetails) {
         `;
 
         gridContainer.appendChild(gridItem);
+
+        const size = document.getElementById(sizeId);
+        size.value = productDetails[i].size;
+
         document.getElementById(buttonId).addEventListener('click', async () => {
             const quantity = parseInt(document.getElementById(inputId).value, 10);
             if (quantity > 0) {
@@ -57,8 +70,10 @@ function generateGridItems(numberOfItems, productDetails) {
                     subtotal: productDetails[i].price * quantity,
                     stock: productDetails[i].stock,
                     imageSrc: productDetails[i].imageSrc,
+                    size: document.getElementById(sizeId).value,
                     referenceNumber: productDetails[i].referenceNumber
                 });
+                alert(`${productDetails[i].name} edited successfully.`);
             } else {
                 document.getElementById(inputId).style.border = '1px solid red';
                 setTimeout(() => document.getElementById(inputId).style.border = '1px solid #ccc', 2000);
@@ -84,6 +99,7 @@ async function addToCart(item) {
     if (existingItem) {
         existingItem.quantity = item.quantity;
         existingItem.subtotal = item.subtotal;
+        existingItem.size = item.size;
         await updateData(db, 'cartItems', existingItem);
     } else {
         await addData(db, 'cartItems', { ...item });

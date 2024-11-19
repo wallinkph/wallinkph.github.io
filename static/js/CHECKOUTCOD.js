@@ -10,7 +10,7 @@ function nextButtonListener() {
 function setPriceAmount() {
     const totalPrice = localStorage.getItem('totalPrice');
     const priceAmount = document.getElementById("amountToPay");
-    priceAmount.innerHTML = `PHP ${totalPrice}`;
+    priceAmount.innerHTML = `₱${totalPrice}`;
 }
 
 document.addEventListener("DOMContentLoaded", () => {

@@ -23,7 +23,7 @@ const productDetails = [
     { name: "Salted Caramel", price: 329, stock: 20, imageSrc: "../../media/ice-creams/Salted_Caramel_ice_cream.png" },
     { name: "Mango Sorbet", price: 491, stock: 4, imageSrc: "../../media/ice-creams/Mango_Sorbet_ice_cream.png" },
     { name: "Butter Pecan", price: 355, stock: 0, imageSrc: "../../media/ice-creams/Butter_Pecan_ice_cream.png" },
-    { name: "Boku No Pico Ice Cream", price: 9999.99, stock: 1, imageSrc: "../../media/ice-creams/Boku_No_Pico_Ice_Cream.jpg" }
+    { name: "Boku No Pico Ice Cream", price: 9999, stock: 1, imageSrc: "../../media/ice-creams/Boku_No_Pico_Ice_Cream.jpg" }
 ];
 
 function addReferenceNumbers(products) {
@@ -48,18 +48,27 @@ function generateGridItems(numberOfItems, productDetails) {
 
         const inputId = `numberInput-${i}`;
         const buttonId = `addToCartButton-${i}`;
+        const sizeId = `size-${i}`;
 
         gridItem.innerHTML = `
             <img src="${productDetails[i].imageSrc}" alt="Product image" class="itemImage">
             <div class="item-info">
                 <h3 class="itemName" title="${productDetails[i].name}">${productDetails[i].name}</h3>
                 <div class="item-pricing-box">
-                    <h2 class="itemPrice">PHP ${productDetails[i].price}</h2>
+                    <h2 class="itemPrice">₱${productDetails[i].price}</h2>
                     <p class="inStocks">In stocks: ${productDetails[i].stock}</p>
                     <div class="increment-box">
-                        <button class="incrementButton" id="incrementButton-${i}">+</button>
-                        <input type="number" class="numberInput" id="${inputId}" value="0" min="0" max="10" step="1">
                         <button class="decrementButton" id="decrementButton-${i}">-</button>
+                        <input type="number" class="numberInput" id="${inputId}" value="0" min="0" max="10" step="1">
+                        <button class="incrementButton" id="incrementButton-${i}">+</button>
+                    </div>
+                    <div class="size-box">
+                        <label for="size">Size:</label>
+                        <select name="size" id="${sizeId}">
+                            <option value="small" selected>Small</option>
+                            <option value="medium">Medium</option>
+                            <option value="large">Large</option>
+                        </select>
                     </div>
                     <p>${productDetails[i].referenceNumber}</p>
                 </div>
@@ -78,12 +87,14 @@ function generateGridItems(numberOfItems, productDetails) {
                 await addToCart({
                     inputId: inputId,
                     buttonId: buttonId,
+                    sizeId: sizeId,
                     name: productDetails[i].name,
                     price: productDetails[i].price,
                     quantity: quantity,
                     subtotal: productDetails[i].price * quantity,
                     stock: productDetails[i].stock,
                     imageSrc: productDetails[i].imageSrc,
+                    size: document.getElementById(sizeId).value,
                     referenceNumber: productDetails[i].referenceNumber
                 });
                 alert(`${quantity} ${productDetails[i].name} added to cart.`);

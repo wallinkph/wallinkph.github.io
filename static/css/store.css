@@ -103,3 +103,30 @@
     padding: 5px 10px;
     margin: 0 5px;
 }
+
+/* 
+<div class="size-box">
+                        <label for="size">Size:</label>
+                        <select name="size" id="${sizeId}">
+                            <option value="small" selected>Small</option>
+                            <option value="medium">Medium</option>
+                            <option value="large">Large</option>
+                        </select>
+                    </div>
+*/
+
+.size-box {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.size-box select {
+    width: 100%;
+    padding: 5px 10px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    outline: none;
+}

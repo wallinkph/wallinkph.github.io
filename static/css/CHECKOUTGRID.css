@@ -16,41 +16,7 @@
 }
 
 .order-item img {
-    width: 50px;
+    width: 100px;
     object-fit: cover;
     margin-right: 20px;
-}
-
-
-
-
-
-
-.order-summary {
-    margin-top: 10px;
-}
-
-.order-list-container-6 {
-    display: flex;
-    flex-direction: row;   /* Align items in a horizontal row */
-    overflow-x: auto;      /* Enable horizontal scrolling */
-    padding: 10px 0;       /* Optional padding */
-    gap: 10px;             /* Optional gap between items */
-    scrollbar-width: thin; /* Optional: if you want a thinner scrollbar */
-}
-
-.order-item-b {
-    display: flex;
-    flex-shrink: 0;        /* Prevent shrinking to fit inside the container */
-    margin-bottom: 5px;
-    border: 2px solid #ccc;
-    border-radius: 5px;
-    width: 200px;          /* Adjust the width of each item as needed */
-    padding: 10px;         /* Optional padding inside the item */
-}
-
-.order-item img {
-    width: 50px;           /* Keep the image size */
-    object-fit: cover;     /* Ensure the image fits properly */
-    margin-right: 20px;    /* Spacing between image and text */
 }
